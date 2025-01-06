@@ -43,13 +43,7 @@ return {
 	},
 	{
 		"williamboman/mason.nvim",
-		opts = {
-			ensure_installed = {
-				"typescript-language-server",
-				"rust-analyzer",
-				"lua-language-server",
-			},
-		},
+		opts = {},
 	},
 	{
 		"neovim/nvim-lspconfig",
@@ -58,6 +52,20 @@ return {
 	{ "hrsh7th/nvim-cmp" },
 	{
 		"stevearc/conform.nvim",
-		opts = {},
+		opts = {
+
+			formatters_by_ft = {
+				lua = { "stylua" },
+				rust = { "rustfmt", lsp_format = "fallback" },
+				javascript = { "prettier" },
+				typescript = { "prettier" },
+				json = { "prettier" },
+			},
+			format_on_save = {
+				-- These options will be passed to conform.format()
+				timeout_ms = 500,
+				lsp_format = "fallback",
+			},
+		},
 	},
 }
