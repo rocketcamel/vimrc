@@ -53,7 +53,8 @@ return {
       "hrsh7th/nvim-cmp",
       "j-hui/fidget.nvim",
       "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip"
+      "saadparwaiz1/cmp_luasnip",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
     },
     config = function()
       require("fidget").setup({})
@@ -103,6 +104,7 @@ return {
 
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
+          { name = "nvim_lsp_signature_help" },
         }, {
           { name = "buffer" },
         }),
