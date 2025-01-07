@@ -49,6 +49,8 @@ return {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/nvim-cmp",
 			"j-hui/fidget.nvim",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip"
 		},
 		config = function()
 			require("fidget").setup({})
@@ -70,12 +72,29 @@ return {
 			local cmp = require("cmp")
 
 			cmp.setup({
+				snippet = {
+					-- REQUIRED - you must specify a snippet engine
+					expand = function(args)
+						require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+					end,
+				},
+
 				mapping = cmp.mapping.preset.insert({
-					["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
-					["<C-n>"] = cmp.mapping.scroll_docs(4),
-					["<C-Space>"] = cmp.mapping.complete(),
-					["<C-e>"] = cmp.mapping.abort(),
-					["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+					-- Simple tab complete
+					['<Tab>'] = cmp.mapping(function(fallback)
+						local col = vim.fn.col('.') - 1
+
+						if cmp.visible() then
+							cmp.select_next_item({ behavior = 'select' })
+						elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+							fallback()
+						else
+							cmp.complete()
+						end
+					end, { 'i', 's' }),
+
+					-- Go to previous item
+					['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = 'select' }),
 				}),
 
 				sources = cmp.config.sources({
