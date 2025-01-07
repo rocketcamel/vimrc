@@ -42,18 +42,53 @@ return {
 		},
 	},
 	{
-		"williamboman/mason.nvim",
-		opts = {},
-	},
-	{
 		"neovim/nvim-lspconfig",
+		dependencies = {
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/nvim-cmp",
+			"j-hui/fidget.nvim",
+		},
+		config = function()
+			require("fidget").setup({})
+			require("mason").setup()
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			require("mason-lspconfig").setup({
+				ensure_installed = {
+					"ts_ls",
+					"lua_ls",
+					"rust_analyzer",
+				},
+				handlers = {
+					function(server)
+						require("lspconfig")[server].setup({ capabilities = capabilities })
+					end,
+				},
+			})
+
+			local cmp = require("cmp")
+
+			cmp.setup({
+				mapping = cmp.mapping.preset.insert({
+					["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
+					["<C-n>"] = cmp.mapping.scroll_docs(4),
+					["<C-Space>"] = cmp.mapping.complete(),
+					["<C-e>"] = cmp.mapping.abort(),
+					["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+				}),
+
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+				}, {
+					{ name = "buffer" },
+				}),
+			})
+		end,
 	},
-	{ "hrsh7th/cmp-nvim-lsp" },
-	{ "hrsh7th/nvim-cmp" },
 	{
 		"stevearc/conform.nvim",
 		opts = {
-
 			formatters_by_ft = {
 				lua = { "stylua" },
 				rust = { "rustfmt", lsp_format = "fallback" },
