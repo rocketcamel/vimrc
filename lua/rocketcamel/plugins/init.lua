@@ -63,17 +63,6 @@ return {
           function(server)
             require("lspconfig")[server].setup({ capabilities = capabilities })
           end,
-          luau_lsp = function()
-            require("luau-lsp").setup({
-              platform = {
-                type = "roblox"
-              },
-              types = {
-                roblox_security_level = "PluginSecurity"
-              },
-              autocompleteEnd = true
-            })
-          end
         },
       })
 
