@@ -69,6 +69,10 @@ return {
       local cmp = require("cmp")
 
       cmp.setup({
+        preselect = "item",
+        completion = {
+          completeopt = "menu,menuone,noinsert"
+        },
         snippet = {
           -- REQUIRED - you must specify a snippet engine
           expand = function(args)
