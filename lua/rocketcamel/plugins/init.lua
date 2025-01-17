@@ -23,6 +23,7 @@ return {
         "markdown_inline",
         "javascript",
         "typescript",
+        "tsx",
         "rust",
         "zig",
       },
@@ -117,6 +118,7 @@ return {
         javascript = { "prettier" },
         typescript = { "prettier" },
         json = { "prettier" },
+        tsx = { "prettier" },
       },
       format_on_save = {
         -- These options will be passed to conform.format()
